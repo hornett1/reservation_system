@@ -3,7 +3,22 @@
 {% block content %}
 
 <div class="body">
-    <p class="text">Работает</p>
+    <div class="row">
+        {% for location in locations %}
+        <div class="col-4">
+            <div class="card">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{ location.country}}</h5>
+                    <p class="card-text">{{ location.region }}</p>
+                    <p class="card-text">{{ location.city }}</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
 </div>
 
 {% endblock %}
