@@ -3,5 +3,7 @@ from .models import *
 
 admin.site.register(User)
 admin.site.register(Company)
+admin.site.register(Location)
+admin.site.register(Car)
 
 
