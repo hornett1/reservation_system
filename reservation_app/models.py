@@ -6,17 +6,7 @@ class Location(models.Model):
     city = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.city
-
-
-class Car(models.Model):
-    brand = models.CharField(max_length=100)
-    model = models.CharField(max_length=250)
-    year = models.IntegerField(default=0)
-    power = models.IntegerField(default=0)
-    damage = models.TextField()
-    mileage = models.IntegerField(default=0)
-    location = models.ForeignKey(Location, on_delete=models.DO_NOTHING)
+        return f"{self.city}, {self.region}, {self.country}"
 
 class User(models.Model):
     name = models.CharField(max_length=50)
@@ -24,15 +14,30 @@ class User(models.Model):
     email = models.EmailField(max_length=50)
     rating = models.FloatField(default=0, )
     reputation = models.FloatField(default=0)
-    cars = models.ManyToManyField(Car)
 
     def __str__(self):
         return self.name
 
+class Car(models.Model):
+    brand = models.CharField(max_length=100)
+    model = models.CharField(max_length=250)
+    year = models.IntegerField(default=0)
+    power = models.IntegerField(default=0)
+    car_engine_volume = models.FloatField(default=0)
+    damage = models.TextField()
+    mileage = models.IntegerField(default=0)
+    location = models.ForeignKey(Location, on_delete=models.DO_NOTHING)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return f"{self.brand} {self.model} {self.year}"
 
-class Company(User):
-    clients_per_month = models.IntegerField(default=0)
-
-
+class Booking(models.Model):
+    start_date = models.DateTimeField()
+    duration = models.DurationField()
+    tenant = models.ForeignKey(User, related_name="tenant", on_delete=models.DO_NOTHING)
+    renter = models.ForeignKey(User, related_name="renter", on_delete=models.DO_NOTHING)
+    car = models.ForeignKey(Car, on_delete=models.DO_NOTHING)
+    
 
 
