@@ -2,6 +2,9 @@ body {
     background-color: aqua;
 }
 
-text {
-    color: aliceblue;
+navbar-text {
+    font-family: Dolphins; 
+    color: #fcc604; 
+    text-shadow: 10px 10px 15px #e80803, -10px -10px 15px #e80803, 10px -10px 15px #e80803, -10px 10px 15px #e80803;
+    font-size: 50px;
 }

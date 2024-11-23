@@ -1,16 +1,21 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
 <div class="body">
     <div class="row">
         {% for location in locations %}
-        <div class="col-4">
+        <div class="col-3">
             <div class="card">
-                <img src="..." class="card-img-top" alt="...">
+                <a href="{% url 'location-detail' location.id %}">
+                    <img class="card-img-top" src="/static/reservation_app/{{ location.region_image }}" alt="{{ location.region }}">
+                </a>
                 <div class="card-body">
-                    <h5 class="card-title">{{ location.country }}</h5>
-                    <a href="#" class="btn btn-primary">Search</a>
+                    <p class="text-center mb-0" style="font-family: Dolphins; 
+                    color: #fcc604; 
+                    text-shadow: 1px 1px 0px #e80803, -1px -1px 0px #e80803, 1px -1px 0px #e80803, -1px 1px 0px #e80803;
+                    font-size: 30px;">{{ location.region }}</p>
                 </div>
             </div>
         </div>

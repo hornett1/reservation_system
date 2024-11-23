@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .region-banner {
+        background-size: cover;
+        background-position: center;
+        height: 400px;
+        position: relative;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .region-text-overlay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        text-align: center;
+        padding: 20px;
+        text-shadow: 6px 6px 12px rgba(0, 0, 0, 0.9);
+    }
+
+    .region-text-overlay h1 {
+        font-size: 3rem;
+        margin: 0;
+    }
+
+    .region-text-overlay p {
+        font-size: 1.5rem;
+        margin: 10px 0 0;
+    }
+
+    .btn {
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        transform: translateY(-3px);
+    }
+
+    .section-divider {
+        height: 1px;
+        background-color: #ccc;
+        margin: 10px 0;
+    }
+
+    .booking-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 400px;
+        width: 100%;
+    }
+
+    .modal-content input,
+    .modal-content select {
+        width: 100%;
+        margin: 10px 0;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .modal-content button {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .modal-content button:hover {
+        background-color: #0056b3;
+    }
+
+    .modal-content .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+        color: #aaa;
+        cursor: pointer;
+    }
+
+    .car-status {
+        font-size: 1rem;
+        color: red;
+        font-weight: bold;
+    }
+
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="region-banner" style="background-image: url('/static/reservation_app/{{ location.city_image }}');">
+                <div class="region-text-overlay">
+                    <h1>{{ location.region }}</h1>
+                    <p>{{ location.info }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="row mt-4">
+        {% for car in cars %}
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card">
+                <img src="/static/reservation_app/{{ car.image }}" class="card-img-top" alt="{{ car.brand }} {{ car.model }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ car.brand }} {{ car.model }}</h5>
+                    <p class="card-text">{{ car.year }}</p>
+
+                    {% if car.is_booked %}
+                        <p class="car-status">This car is currently booked</p>
+                    {% else %}
+                        <button class="btn btn-primary book-btn" data-car-id="{{ car.id }}">Book Now</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="booking-modal" id="bookingModal">
+    <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h3>Select Booking Dates</h3>
+        <form method="post" id="bookingForm">
+            {% csrf_token %}
+            <input type="datetime-local" name="date-start" id="date-start" class="form-control" required>
+            <input type="datetime-local" name="date-end" id="date-end" class="form-control" required>
+            <select name="car-id" id="car-id" class="form-control" required>
+                {% for car in cars %}
+                <option value="{{ car.id }}">
+                    {{ car.brand }} {{ car.model }} ({{ car.year }})
+                </option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const bookButtons = document.querySelectorAll('.book-btn');
+    const bookingModal = document.getElementById('bookingModal');
+    const closeModal = document.getElementById('closeModal');
+    const carIdInput = document.getElementById('car-id');
+    
+    bookButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const carId = button.getAttribute('data-car-id');
+            carIdInput.value = carId;
+            bookingModal.style.display = 'flex';
+        });
+    });
+
+    closeModal.addEventListener('click', () => {
+        bookingModal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (event) => {
+        if (event.target === bookingModal) {
+            bookingModal.style.display = 'none';
+        }
+    });
+</script>
+
+{% endblock %}

@@ -4,6 +4,9 @@ class Location(models.Model):
     country = models.CharField(max_length=50)
     region = models.CharField(max_length=150)
     city = models.CharField(max_length=50)
+    country_image = models.ImageField(blank=True)
+    region_image = models.ImageField(blank=True)
+    city_image = models.ImageField(blank=True)
 
     def __str__(self):
         return f"{self.city}, {self.region}, {self.country}"
@@ -34,7 +37,7 @@ class Car(models.Model):
 
 class Booking(models.Model):
     start_date = models.DateTimeField()
-    duration = models.DurationField()
+    end_date = models.DateTimeField()
     tenant = models.ForeignKey(User, related_name="tenant", on_delete=models.DO_NOTHING)
     renter = models.ForeignKey(User, related_name="renter", on_delete=models.DO_NOTHING)
     car = models.ForeignKey(Car, on_delete=models.DO_NOTHING)

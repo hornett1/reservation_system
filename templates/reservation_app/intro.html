@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="logo-container">
+    <img src="/static/reservation_app/logo.png" alt="PIMP MY TRIP Logo" class="logo">
+  </div>
+
+  <style>
+    .logo-container {
+      height: 80vh; /* Занимает весь экран по вертикали */
+      display: flex;
+      justify-content: center; /* Выравнивание по горизонтали */
+      align-items: center; /* Выравнивание по вертикали */
+      text-align: center; /* Центрирует текст */
+    }
+
+    .logo {
+      max-width: 100%; /* Ограничивает ширину изображения до 100% от экрана */
+      max-height: 100%; /* Ограничивает высоту изображения до 100% от экрана */
+      object-fit: contain; /* Сохраняет пропорции изображения */
+    }
+  </style>
+{% endblock %}
